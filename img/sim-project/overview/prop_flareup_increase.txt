@@ -1,0 +1,8 @@
+In the flare-up scenario, proprtion of time-series that are actuallygoing up in the second period, according to three criteria: mean increases,median increases, or the 25th percentile of the second period is larger orequal to the 75th of the first.
+Rt(normal) = 1
+Rt(increase) = 2.5
+initial incidence = 100
+
+mean: 1
+median: 0.9889
+percentiles: 0.5667
