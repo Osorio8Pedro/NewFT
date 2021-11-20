@@ -1,3 +1,8 @@
+require(ggplot2)
+require(gridExtra)
+require("RColorBrewer")
+require("shinydashboard")
+
 names(ftregion)
 ftregion<-read.csv("newftregion.txt",sep=";",header=T)
 ftregion<-read.csv("ftcomuna.txt",sep=";",header=T)
@@ -101,7 +106,7 @@ c=round(c/p*100000)
 d<-ftis3$cant_falle
 d=round(d/p*100000)
 x<-ftis3$txt_semanaepidemiologica
-df=data.frame(a,e,b,c,d,x)
+df=data.frame(a,p,e,b,c,d,x)
 
 ftis3
 length(ftis3)
@@ -115,6 +120,24 @@ lines(as.Date(df[,2]),df[,5],col="purple")
 
 lines(t2[,1],t2[,2],col="red")
 lines(t1[,1],t1[,2],col="red")
+
+################################
+ftregion<-read.csv("newftregion.txt",sep=";",header=T)
+ftregion=ftregion[which(as.Date(ftregion$fch_confirmado)>="2021-11-20"),]
+
+regiones=c("Tarapaca","Antofagasta","Atacama","Coquimbo","Valparaiso","Ohiggins","Maule","Bio-Bio","Araucania","Los Lagos","Aysen","Magallanes","Metropolitana","Los Rios","Arica","Nuble")
+df=data.frame("Region"=regiones,"id_region"=1:16,"poblacion"=ftregion$cant_poblacion[2:17])
+
+df=df[c(15,1:5,13,6:7,16,8:9,14,10:12),]
+barplot(df[,3],main="",xlab="",ylab="cantidad de poblacion",ylim=c(0,9000000), names.arg=df[,1],cex.names=0.7,las=2,col=brewer.pal(9, "BuPu"))
+abline(h=nac,col="red",lwd=2)
+text(15,0.95,paste("Ocupacion Nacional",round(nac*100,2),"%"),col="red",lwd=2)
+barplot(df[,3],main="% Ocupacion Camas UCI por Region",xlab="",ylab="% Ocupacion UCI",ylim=c(0,1), names.arg=df[,1],cex.names=0.7,las=2,col=brewer.pal(9, "Greens"))
+abline(h=nac,col="red",lwd=2)
+
+regiones2=c("Nacional","Tarapaca","Antofagasta","Atacama","Coquimbo","Valparaiso","Ohiggins","Maule","Bio-Bio","Araucania","Los Lagos","Aysen","Magallanes","Metropolitana","Los Rios","Arica","Nuble","Norte Grande","Norte Chico","Zona Centro","Zona Sur","Zona Austral","Regiones sin RM")
+tablaresumen=data.frame("Region"=regiones2,"cant_pobla"=ftregion$cant_poblacion,"Confirmados"=ftregion$cant_casosconfirmados,"PCR"=ftregion$cant_pcrrealizados,"Fallecidos"=ftregion$cant_fallecidos,"Recuperados"=ftregion$cant_ultimoscasosrecuperadosinformados)
+xtable(tablaresumen)
 ######################
 
 
