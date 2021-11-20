@@ -1,5 +1,5 @@
 names(ftregion)
-ftregion<-read.csv("ftregion.txt",sep=";",header=T)
+ftregion<-read.csv("newftregion.txt",sep=";",header=T)
 ftregion<-read.csv("ftcomuna.txt",sep=";",header=T)
 ftis<-read.csv("ftiniciosintomas.txt",sep=";",header=T)
 summary(ftis)
@@ -84,7 +84,41 @@ data_set <- data.frame(Region = ftregion$txt_nombreregion,
 
 head(data_set)
 ####################
+
+
+ftregion<-read.csv("newftregion.txt",sep=";",header=T)
+plot(df$e, df$b, type = "l", col ="tomato", lwd=2, ylim = c(-5,5))
+lines(df$e, df$c, col = "lightblue", lwd = 2, lty= "dashed")
+
+ftis3=ftregion[which(ftregion$id_region==0),]
+a<-ftis3$id_region
+e<-ftis3$fch_confirmado
+p<-ftis3$cant_poblacion
+b<-ftis3$cant_casosconfirmadosdiario
+b=round(b/p*100000)
+c<-ftis3$cant_uci
+c=round(c/p*100000)
+d<-ftis3$cant_falle
+d=round(d/p*100000)
+x<-ftis3$txt_semanaepidemiologica
+df=data.frame(a,e,b,c,d,x)
+
+ftis3
+length(ftis3)
+t1=aggregate(b~x,ftis3,sum)
+t2=aggregate(c~x,ftis3,sum)
+t3=aggregate(d~x,ftis3,sum)
+
+qqplot(as.Date(df[,2]),df[,3],type="l")
+lines(as.Date(df[,2]),df[,4],col="red")
+lines(as.Date(df[,2]),df[,5],col="purple")
+
+lines(t2[,1],t2[,2],col="red")
+lines(t1[,1],t1[,2],col="red")
 ######################
+
+
+
 ########Trabajo de Stéphane Ghozzi asmodee-trendbreaker-evaluation.R
 
 
