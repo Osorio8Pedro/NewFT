@@ -130,6 +130,9 @@ df=data.frame("Region"=regiones,"id_region"=1:16,"poblacion"=ftregion$cant_pobla
 
 df=df[c(15,1:5,13,6:7,16,8:9,14,10:12),]
 barplot(df[,3],main="",xlab="",ylab="cantidad de poblacion",ylim=c(0,9000000), names.arg=df[,1],cex.names=0.7,las=2,col=brewer.pal(9, "BuPu"))
+
+
+
 abline(h=nac,col="red",lwd=2)
 text(15,0.95,paste("Ocupacion Nacional",round(nac*100,2),"%"),col="red",lwd=2)
 barplot(df[,3],main="% Ocupacion Camas UCI por Region",xlab="",ylab="% Ocupacion UCI",ylim=c(0,1), names.arg=df[,1],cex.names=0.7,las=2,col=brewer.pal(9, "Greens"))
@@ -140,7 +143,106 @@ tablaresumen=data.frame("Region"=regiones2,"cant_pobla"=ftregion$cant_poblacion,
 xtable(tablaresumen)
 ######################
 
+# install.packages(calendR)
+library(calendR)
 
+# Datos
+ftregion<-read.csv("newftregion.txt",sep=";",header=T)
+ftregion=ftregion[which(ftregion$id_region==0),]
+ftregion=ftregion[which(as.Date(ftregion$fch_confirmado)>="2021-01-01"),]
+ftregion=ftregion[which(as.Date(ftregion$fch_confirmado)<="2021-11-20"),]
+p<-ftregion$cant_poblacion
+datos<-ftregion$cant_casosconfirmadosdiario
+datos=round(datos/p*100000,1)
+#datos<-(ftregion$cant_pcr)
+#datos=round(datos/10000)
+#datos <-as.numeric((ftregion$porc_positividad)*10)
+#datos <-as.numeric(ftregion$cant_casosconfirmadosdiario)
+dias <- rep(min(datos), 365)
+dias[1:324]<- datos
+
+#t<-rep(1000,42)
+#datos<-c(datos,t)
+# Calendario
+calendR(year = 2021,
+        special.days = dias,
+        #low.col = "white",
+        #special.col = "#FF0000",
+        #low.col = "#FCFFDD",
+        special.col = "#2ca25f",
+        gradient = T, 
+        legend.pos = "bottom")
+
+calendR(year = 2005, month = 7, start = "M", subtitle = "Have a nice day")
+
+#datos <- rnorm(30, 15, 10)
+
+# Crea un vector donde todos los valores son ligeramente
+# inferiores que el menor valor de tus datos
+#dias <- rep(min(datos) - 0.05, 365)
+
+# Rellena los días que quieras con tus datos
+##
+dias[30:59] <- datos
+
+calendR(year = 2021,
+        special.days = dias,
+        low.col = "white",
+        special.col = "#FF0000",
+        gradient = TRUE,
+        legend.pos = "bottom")
+
+
+####################################
+# Install the development version from GitHub:
+ install.packages("devtools")
+library(devtools)
+devtools::install_github("R-CoderDotCom/cyberpunk")
+library(cyberpunk)
+my_df <- data.frame(((ftregion$porc_positividad)*10000),ftregion$cant_pcr,ftregion$cant_casosconfirmadosdiario)
+my_df <- data.frame(ftregion$cant_casosconfirmadosdiario)
+my_df <-data.frame(datos)
+cyber_lines(x = 1:324,
+            df = my_df,
+            area = F,
+            glow = F,
+            palette = 1,
+            bg.col = "#f7f7f7",
+            grid.col = rgb(1, 0.8, 1, 1),
+            text.col = "black",
+            main = "Incidencia Nacional")
+cyber_lines(
+   x = 1:324,
+   df = my_df,
+   col,
+   palette = 1,
+   glow = FALSE,
+   area = FALSE,
+   main = NULL,
+   main.size = 20,
+   sub = NULL,
+   xlab = NULL,
+   ylab = NULL,
+   bg.col = "#212946",
+   grid.col = "#242d4d",
+   text.col = "lightgray",
+   lwd = 1.75,
+   xlim = NULL,
+   ylim = NULL
+)
+#################Positividad
+my_df <- data.frame(((ftregion$porc_positividad)*10000),ftregion$cant_pcr,ftregion$cant_casosconfirmadosdiario)
+my_df <- data.frame(((ftregion$porc_positividad)*100),datos)
+#my_df <-data.frame(datos)
+cyber_lines(x = 1:324,
+            df = my_df,
+            area = F,
+            glow = F,
+            palette = 3,
+            bg.col = "#f7f7f7",
+            grid.col = rgb(0.8, 1, 1, 1),
+            text.col = "black",
+            main = "Incidencia y Positividad Nacional")
 
 ########Trabajo de Stéphane Ghozzi asmodee-trendbreaker-evaluation.R
 
