@@ -4,5 +4,5 @@ Rt(increase) = 2.5
 initial incidence = 100
 
 mean: 1
-median: 0.9889
-percentiles: 0.5667
+median: 1
+percentiles: 0.3778
