@@ -10,19 +10,47 @@ library(dplyr)        # for data manipulation
 library(future)
 ftregion<-read.csv("ftregion.txt",sep=";",header=T)
 fechas=names(table(ftregion$fch_confirmado))
-l1=length(fechas)#218
+l1=length(fechas)
 
 names(ftregion)
 ftregion8=ftregion %>% select(fch_confirmado,txt_nombreregion,cant_casosconfirmadosdiario,cant_poblacion,porc_positividad,cant_uci,cant_fallecidos)
 
-ftregion8$cant_casosconfirmadosdiario<-((ftregion8$cant_casosconfirmadosdiario)/(ftregion8$cant_poblacion)*100000)
 #Incidencia
+ftregion8$cant_casosconfirmadosdiario<-((ftregion8$cant_casosconfirmadosdiario)/(ftregion8$cant_poblacion)*100000)
 d=as.numeric(ftregion8$cant_casosconfirmadosdiario)
 ftregion8$cant_casosconfirmadosdiario=round(d,2)
 #Positividad
 positivo=(ftregion8$porc_positividad)*100
 ftregion8$porc_positividad=round(positivo,2)
 #Mortalidad
+
+ftM=ftregion8
+i=2
+diff=0
+tt=0
+fechas=names(table(ftM$fch_confirmado))
+l1=length(fechas)
+base22<-ftM[ftM$fch_confirmado==as.Date(fechas[1]),]
+names(ftM)
+i=2
+diff=0
+base22=cbind(base22,diff)
+jj<-ftM[ftM$fch_confirmado==as.Date(fechas[i]),]
+while (i<=length(fechas)){
+   jj<-cbind(jj,diff)
+   jj2<-cbind(jj,diff)
+   jj<-ftM[ftM$fch_confirmado==as.Date(fechas[i]),]
+   jj2<-ftM[ftM$fch_confirmado==as.Date(fechas[i-1]),]
+   diff<-as.numeric(jj$cant_fallecidos-jj2$cant_fallecidos)
+   jj<-cbind(jj,diff)
+   base22<-rbind(base22,jj)
+   i<-i+1
+}
+
+ftregion8<-base22[,-7]
+ftregion8$diff<-((ftregion8$diff)/(ftregion8$cant_poblacion)*100000)
+mort=as.numeric(ftregion8$diff)
+ftregion8$diff=round(mort,2)
 
 ftregion8$fch_confirmado<-as.Date(ftregion8$fch_confirmado)
 fecha=as.Date("2020-03-03")
@@ -136,4 +164,8 @@ models <- list(
 )
 res <- asmodee(dat, models, method = evaluate_aic, alpha=0.05, k = 7)
 plot(res)
+
+
+
+
 
