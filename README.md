@@ -1,6 +1,11 @@
-# Proyecto ClusterPoint
+# Proyecto de Tesis: Sistema de monitodeo de la pandemia de covid-19 en Chile u tilizando métodos de Change-Point. ClusterPoint
 datos de covid-19
 
+###A continuación un ejemplo de ASMODEE (Jombart et. al) 
+
+![Idaho overdispersion](febrero4.jpg)
+
+##Drescripción de los datos por región
 ```{r,echo=FALSE,results='asis'}
 ftregion<-read.csv("newftregion.txt",sep=";",header=T)
 ftregion=ftregion[which(as.Date(ftregion$fch_confirmado)="2021-11-20"),]
@@ -13,4 +18,4 @@ barplot(df[,3],main="",xlab="",ylab="cantidad de poblacion",ylim=c(0,9000000), n
 
 ```
 ![Idaho overdispersion](pobla.png)
-![Idaho overdispersion](febrero4.jpg)
+
