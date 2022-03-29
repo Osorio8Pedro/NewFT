@@ -5,7 +5,7 @@ datos de covid-19
 
 ![Idaho overdispersion](febrero4.jpg)
 
-##Drescripción de los datos por región
+## Análisis Descriptivo
 ```{r,echo=FALSE,results='asis'}
 ftregion<-read.csv("newftregion.txt",sep=";",header=T)
 ftregion=ftregion[which(as.Date(ftregion$fch_confirmado)="2021-11-20"),]
