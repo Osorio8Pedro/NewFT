@@ -1,5 +1,5 @@
 # Proyecto ClusterPoint
-data de covid
+datos de covid-19
 
 ```{r,echo=FALSE,results='asis'}
 ftregion<-read.csv("newftregion.txt",sep=";",header=T)
@@ -13,3 +13,4 @@ barplot(df[,3],main="",xlab="",ylab="cantidad de poblacion",ylim=c(0,9000000), n
 
 ```
 ![Idaho overdispersion](pobla.png)
+![Idaho overdispersion](febrero4.jpg)
