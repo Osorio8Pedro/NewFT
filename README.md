@@ -1,11 +1,12 @@
-# Proyecto de Tesis: Sistema de monitodeo de la pandemia de covid-19 en Chile u tilizando métodos de Change-Point. ClusterPoint
+# Proyecto de Tesis: Sistema de monitodeo de la pandemia de covid-19 en Chile u tilizando métodos de Change-Point. 
+## ClusterPoint
 datos de covid-19
 
-###A continuación un ejemplo de ASMODEE (Jombart et. al) 
+### A continuación un ejemplo de ASMODEE (Jombart et. al) 
 
 ![Idaho overdispersion](febrero4.jpg)
 
-## Análisis Descriptivo
+### Análisis Descriptivo
 ```{r,echo=FALSE,results='asis'}
 ftregion<-read.csv("newftregion.txt",sep=";",header=T)
 ftregion=ftregion[which(as.Date(ftregion$fch_confirmado)="2021-11-20"),]
